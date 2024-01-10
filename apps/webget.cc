@@ -17,8 +17,38 @@ void get_URL(const string &host, const string &path) {
     // (not just one call to read() -- everything) until you reach
     // the "eof" (end of file).
 
-    cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
-    cerr << "Warning: get_URL() has not been implemented yet.\n";
+    // cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
+    //! This lab ask us to know the structure and relationship of the socket.hh/file_descriptor.hh/address.hh
+    try {
+        // step 1: connect to the "http" service
+        Address addr(host, "http");
+        TCPSocket socket;
+        socket.connect(addr);
+
+        // step 2: contruct request
+        string request = "GET " + path +
+                         " HTTP/1.1\r\n"
+                         "Host: " +
+                         host +
+                         "\r\n"
+                         "Connection: close\r\n\r\n";
+
+        // step 3: send request
+        socket.write(request);
+        socket.shutdown(SHUT_WR);
+
+        // step 4: read response
+        while (!socket.eof()) {
+            string response = socket.read(1);
+            cout << response;
+        }
+
+        // should we call socket.close() ?
+    } catch (const exception &e) {
+        cerr << "Error: " << e.what() << "\n";
+    }
+
+    // cerr << "Warning: get_URL() has not been implemented yet.\n";
 }
 
 int main(int argc, char *argv[]) {

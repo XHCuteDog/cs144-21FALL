@@ -7,6 +7,8 @@ To set up your build directory:
 	$ mkdir -p <path/to/sponge>/build
 	$ cd <path/to/sponge>/build
 	$ cmake ..
+if u meet the problem: **You must compile this project with g++ >= 8 or clang >= 6.**
+After `sudo apt-get install g++-8` then `cmake .. -DCMAKE_CXX_COMPILER=g++-8`
 
 **Note:** all further commands listed below should be run from the `build` dir.
 
