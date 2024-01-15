@@ -23,9 +23,9 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
     // DUMMY_CODE(data, index, eof);
     if (eof) {
         _is_eof = true;
-        if (index == 0) {
-            _output.end_input();
-        }
+        // if (index == 0) {
+        //     _output.end_input();
+        // }
     }
     // } else if (_is_eof && empty()) {  // eof had been added into unassembled list.
     //     _output.end_input();
@@ -47,10 +47,10 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
             }
             ++it;
         }
-				// for example for the index = 0, the segment will impossible be added into list
-        if (!flag) {  
+        // for example for the index = 0, the segment will impossible be added into list
+        if (!flag) {
             // The data must be inserted into the list to confirm it aligns with the spatial constraints.
-						_unassembled.push_front({_next_index, data}); 
+            _unassembled.push_front({_next_index, data});
             sort_overlap_space();
             auto it = _unassembled.begin();
             str = it->second;
@@ -58,8 +58,8 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
         }
         _output.write(str);
         _next_index += str.size();
-				// This step is crucial for pushing adjacent but non-overlapping segments.
-				// eg: Initialized (capacity = 2)
+        // This step is crucial for pushing adjacent but non-overlapping segments.
+        // eg: Initialized (capacity = 2)
         // Action:      substring submitted with data "bX", index `1`, eof `0`
         // Expectation: net bytes assembled = 0
         // Action:      substring submitted with data "a", index `0`, eof `0`
@@ -144,7 +144,9 @@ void StreamReassembler::sort_overlap_space() {
         }
         while (space_waiting_free) {
             auto &it = _unassembled.back();
-            if (it.second.size() < space_waiting_free) { // do not contain equal! otherwise will lead to segment fault. When list just has one element, then is empty, but we have "sort_overlap_space() auto it = _unassembled.begin();"!
+            if (it.second.size() < space_waiting_free) {  // do not contain equal! otherwise will lead to segment fault.
+                                                          // When list just has one element, then is empty, but we have
+                                                          // "sort_overlap_space() auto it = _unassembled.begin();"!
                 space_waiting_free -= it.second.size();
                 _unassembled.pop_back();
             } else {

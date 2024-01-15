@@ -2,7 +2,7 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: g++-8 build active file",
+            "label": "C/C++: g++-8 build active file with C++17",
             "command": "/usr/bin/g++-8",
             "args": [
                 "-fdiagnostics-color=always",
