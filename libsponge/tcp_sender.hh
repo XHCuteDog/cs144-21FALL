@@ -5,7 +5,7 @@
 #include "tcp_config.hh"
 #include "tcp_segment.hh"
 #include "wrapping_integers.hh"
-
+#include "timer.hh"
 #include <functional>
 #include <queue>
 
@@ -31,6 +31,14 @@ class TCPSender {
 
     //! the (absolute) sequence number for the next byte to be sent
     uint64_t _next_seqno{0};
+
+    uint16_t _remote_window_size{1};
+    bool _syn_sent{false};
+    bool _fin_sent{false};
+    size_t _bytes_in_flight{0};
+    std::queue<std::pair<uint64_t,TCPSegment>> _outstanding_segments{};
+    Timer _timer;
+    unsigned int _consecutive_retransmissions{0};
 
   public:
     //! Initialize a TCPSender
